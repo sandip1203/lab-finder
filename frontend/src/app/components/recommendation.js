@@ -104,7 +104,9 @@ export default function Recommendation({ tests, selectedTestIds, onToggleTest })
               <li className="flex items-center justify-between gap-3 py-3" key={`${item.type}-${item.id}`}>
                 <div>
                   <p className="text-sm font-medium text-gray-800">{item.name}</p>
-                  <p className="text-xs capitalize text-gray-500">{item.type}</p>
+                  <p className="text-xs text-gray-500">
+                    {item.type === "package" ? "Package" : "Individual test"}
+                  </p>
                 </div>
                 <span className="shrink-0 text-sm font-semibold text-gray-800">
                   {formatPrice(item.price)}

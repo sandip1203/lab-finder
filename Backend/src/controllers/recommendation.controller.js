@@ -18,10 +18,11 @@ function recommendCheapest(requestIds, tests, packages) {
     }
 
     //  Calculate the individual price
-    const individualTotal = requestedTests.reduce(
-        (sum, test) => sum + test.price,
-        0
+    const individualTotal = requestedTests.every(
+        test => typeof test.price === "number" && Number.isFinite(test.price)
     )
+        ? requestedTests.reduce((sum, test) => sum + test.price, 0)
+        : null
 
     //  Only consider active packages
     const activePackages = packages.filter(
@@ -29,6 +30,7 @@ function recommendCheapest(requestIds, tests, packages) {
     )
 
     let bestOption = null
+    let bestScore = Number.POSITIVE_INFINITY
 
     //  Try every possible combination of packages
     function search(index, selectedPackages) {
@@ -53,12 +55,13 @@ function recommendCheapest(requestIds, tests, packages) {
                 0
             )
 
-            const missingTotal = missingTests.reduce(
-                (sum, test) => sum + test.price,
-                0
+            const missingPricesKnown = missingTests.every(
+                test => typeof test.price === "number" && Number.isFinite(test.price)
             )
-
-            const total = packageTotal + missingTotal
+            const total = missingPricesKnown
+                ? packageTotal + missingTests.reduce((sum, test) => sum + test.price, 0)
+                : null
+            const score = total ?? Number.POSITIVE_INFINITY
 
             // Extra tests included in packages but not requested
             const extraTests = [
@@ -67,7 +70,8 @@ function recommendCheapest(requestIds, tests, packages) {
                 )
             ].filter(id => !requestIds.includes(id))
 
-            if (!bestOption || total < bestOption.total) {
+            if (!bestOption || score < bestScore) {
+                bestScore = score
                 bestOption = {
                     items: [
                         ...selectedPackages.map(pack => ({
@@ -80,16 +84,19 @@ function recommendCheapest(requestIds, tests, packages) {
                             )
                         })),
                         ...missingTests.map(test => ({
-                            type: "individual",
+                            type: "test",
                             id: test.id,
                             name: test.name,
-                            price: test.price
+                            price: test.price,
+                            covers: [test.id]
                         }))
                     ],
                     total,
                     extraTests,
                     individualTotal,
-                    savings: individualTotal - total
+                    savings: individualTotal === null || total === null
+                        ? null
+                        : individualTotal - total
                 }
             }
 
