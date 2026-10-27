@@ -30,7 +30,8 @@ From `Backend`, run:
 npm test
 ```
 
-AI was used to help write the test code. It reads each request and expected
+
+I  used AI  to  write the test code. It reads each request and expected
 result from `Backend/data/lab-catalog.json` and checks the recommendation
 service output against it.
 
