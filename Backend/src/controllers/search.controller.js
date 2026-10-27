@@ -1,14 +1,18 @@
 import { readFile } from "node:fs/promises"
 
-export async function getTests(req,res)
-{
-    const data = await readFile(new URL ("../../data/lab-catalog.json",import.meta.url),"utf-8")
+export async function getTests(req, res) {
+    const data = await readFile(
+        new URL("../../data/lab-catalog.json", import.meta.url),
+        "utf-8"
+    )
     const tests = JSON.parse(data).tests
-    res.status(200).json({
-        message:"tests fetch successfully",
-        test:tests
+
+    return res.status(200).json({
+        message: "tests fetch successfully",
+        test: tests,
     })
 }
+
 
 export async function getPackages(req,res){
     const data = await readFile(new URL("../../data/lab-catalog.json",import.meta.url),"utf-8")
