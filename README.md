@@ -1,15 +1,12 @@
 # Labwise
-Labwise is a lab-test catalog and recommendation app. Browse tests and packages,
-add tests to your selection, and compare package combinations with individual
-test prices to find the lowest-cost option.
 
-## Requirements
-- Node.js 22
-- npm
+Labwise helps you find the lowest-cost combination of lab tests and packages.
 
 ## Run the app
 
-Install dependencies and start the backend:
+Requires Node.js 22 and npm.
+
+Start the backend:
 
 ```bash
 cd Backend
@@ -17,9 +14,7 @@ npm install
 node server.js
 ```
 
-The Express API starts at `http://localhost:3000`.
-
-In a second terminal, install dependencies and start the frontend:
+In another terminal, start the frontend:
 
 ```bash
 cd Frontend
@@ -27,22 +22,17 @@ npm install
 npm run dev
 ```
 
-Open [http://localhost:3001](http://localhost:3001). The Next.js app forwards
-API requests to `http://localhost:3000` by default. To use another backend
-address, set `LAB_BACKEND_URL` before starting the frontend.
+## Run tests
 
-## Run backend tests
-
-From the `Backend` directory, run:
+From `Backend`, run:
 
 ```bash
 npm test
 ```
 
-The tests start the Express app on an available local port and compare the
-recommendation endpoint's response against every request/expected-response
-example in `Backend/data/lab-catalog.json`. They also cover empty, inactive, and
-unknown test IDs.
+AI was used to help write the test code. It reads each request and expected
+result from `Backend/data/lab-catalog.json` and checks the recommendation
+service output against it.
 
 ## How the recommendation works
 
@@ -69,8 +59,6 @@ The backend:
   (for example, dynamic programming or branch-and-bound) as the catalog grows.
 - Validate catalog data at startup, including prices, package test IDs, and
   duplicate or missing identifiers.
-- Add focused unit tests for recommendation edge cases such as ties, duplicate
-  package contents, and unknown prices, in addition to the API example tests.
+- Add more tests for recommendation edge cases.
 - Add catalog search, pagination, and clearer retry/loading states for larger
   catalogs or API failures.
-

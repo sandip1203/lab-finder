@@ -1,27 +1,30 @@
 import { Router } from "express"
-import { readFile } from "node:fs/promises"
 import { getTests ,getPackages,search} from "../controllers/search.controller.js";
-import { recommendation_data } from "../controllers/recommendation.controller.js";
+import { recommendationController } from "../controllers/recommendation.controller.js";
 
 
 const searchRouter = Router();
 
+searchRouter.get("/tests", getTests)
 
-
-searchRouter.get("/tests",getTests)
+/*
+* -GET /packages
+*/
 
 searchRouter.get("/packages",getPackages)
 
+/*
+* -GET /search
+*/
 
 searchRouter.get("/search",search)
 
 
+/*
+* -POST /recommendation
+*/
 
-
-
-
-
-searchRouter.post("/recommendation", recommendation_data)
+searchRouter.post("/recommendation", recommendationController)
 
 
 
